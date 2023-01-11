@@ -6,6 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/index.js",
+    "start dev": "nodemon",
+    "start prod": "tsc && node ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -13,10 +15,19 @@
     "url": "git+https://github.com/DenisWilk/crud-api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Den",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/DenisWilk/crud-api/issues"
   },
-  "homepage": "https://github.com/DenisWilk/crud-api#readme"
+  "homepage": "https://github.com/DenisWilk/crud-api#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "uuid": "^9.0.0"
+  }
 }
