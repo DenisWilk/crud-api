@@ -1,0 +1,42 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "start:prod": "tsc && node ./dist/index.js",
+    "start:dev": "nodemon",
+    "start:multi": "cross-env MODE=multi npm run start:dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DenisWilk/crud-api.git"
+  },
+  "keywords": [],
+  "author": "Den",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DenisWilk/crud-api/issues"
+  },
+  "homepage": "https://github.com/DenisWilk/crud-api#readme",
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/uuid": "^9.0.0",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "uuid": "^9.0.0"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "exec": "ts-node src/index.ts"
+  }
+}
