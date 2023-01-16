@@ -2,22 +2,26 @@ import { IncomingMessage, ServerResponse } from "http";
 import { validate } from "uuid";
 import { IUser } from "./types";
 import { usersDatabase } from "./controller";
+import { messages } from "./messages";
 
 export function validateId(response: ServerResponse, id: string): boolean {
   try {
     if (!validate(id)) {
       response.writeHead(400, { "Content-Type": "application/json" });
-      response.end(JSON.stringify({ code: 400, message: "" }));
+      response.end(JSON.stringify({ code: 400, message:messages.noId }));
+
       return false;
     }
     if (!usersDatabase.find((el: IUser): boolean => el.id === id)) {
       response.writeHead(404, { "Content-Type": "application/json" });
-      response.end(JSON.stringify({ code: 404, message: "" }));
+      response.end(JSON.stringify({ code: 404, message: messages.noUser }));
+
       return false;
     }
   } catch {
     response.writeHead(500, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ code: 500, message: "" }));
+    response.end(JSON.stringify({ code: 500, message: messages.serverError }));
+
     return false;
   }
   return true;
@@ -32,19 +36,22 @@ export function validateBody(response: ServerResponse, body: IUser): boolean {
       !Array.isArray(hobbies)
     ) {
       response.writeHead(400, { "Content-Type": "application/json" });
-      response.end(JSON.stringify({ code: 400, message: "" }));
+      response.end(JSON.stringify({ code: 400, message: messages.requiredData }));
+
       return false;
     }
     if (hobbies.length > 0) {
-      if (!hobbies.some((elem) => typeof elem === "string")) {
+      if (!hobbies.some((el: string): boolean => typeof el === "string")) {
         response.writeHead(400, { "Content-Type": "application/json" });
-        response.end(JSON.stringify({ code: 400, message: "" }));
+        response.end(JSON.stringify({ code: 400, message: messages.requiredData }));
+
         return false;
       }
     }
   } catch {
     response.writeHead(500, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ code: 500, message: "" }));
+    response.end(JSON.stringify({ code: 500, message: messages.serverError }));
+
     return false;
   }
   return true;
@@ -66,7 +73,9 @@ export function setBody(
         resolve(JSON.parse(body));
       } catch {
         response.writeHead(400, { "Content-Type": "application/json" });
-        response.end(JSON.stringify({ code: 400, message: "" }));
+        response.end(
+          JSON.stringify({ code: 400, message: messages.incorrectData })
+        );
       }
     });
   });

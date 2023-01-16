@@ -1,7 +1,8 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { v4 as uuid } from "uuid";
+import { v1 as uuid } from "uuid";
 import { IUser } from "./types";
 import { validateId, validateBody, setBody } from "./utils";
+import { messages } from "./messages";
 
 export const usersDatabase: IUser[] = [];
 
@@ -11,16 +12,18 @@ export function getUsers(response: ServerResponse): void {
     response.end(JSON.stringify(usersDatabase));
   } catch {
     response.writeHead(500, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ code: 500, message: "" }));
+    response.end(JSON.stringify({ code: 500, message: messages.serverError }));
   }
 }
 
 export function getUser(response: ServerResponse, id: string): void {
-  const isId = validateId(response, id);
+  const isId: boolean = validateId(response, id);
 
   if (isId) {
     response.writeHead(200, { "Content-Type": "application/json" });
-    response.end(JSON.stringify(usersDatabase.find((el) => el.id === id)));
+    response.end(
+      JSON.stringify(usersDatabase.find((el: IUser): boolean => el.id === id))
+    );
   }
 }
 
@@ -42,7 +45,7 @@ export async function addUser(
     }
   } catch {
     response.writeHead(500, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ code: 500, message: "" }));
+    response.end(JSON.stringify({ code: 500, message: messages.serverError }));
   }
 }
 
@@ -59,7 +62,9 @@ export async function updateUser(
       const validBody: boolean = validateBody(response, body);
 
       if (validBody) {
-        const userId = usersDatabase.findIndex((el: IUser): boolean => el.id === id);
+        const userId = usersDatabase.findIndex(
+          (el: IUser): boolean => el.id === id
+        );
         usersDatabase[userId] = { id, ...body };
 
         response.writeHead(200, { "Content-Type": "application/json" });
@@ -68,7 +73,7 @@ export async function updateUser(
     }
   } catch {
     response.writeHead(500, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ code: 500, message: "" }));
+    response.end(JSON.stringify({ code: 500, message: messages.serverError }));
   }
 }
 
@@ -86,6 +91,6 @@ export function removeUser(response: ServerResponse, id: string): void {
     }
   } catch {
     response.writeHead(500, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ code: 500, message: "" }));
+    response.end(JSON.stringify({ code: 500, message: messages.serverError }));
   }
 }

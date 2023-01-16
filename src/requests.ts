@@ -1,4 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
+import { messages } from "./messages";
 import {
   getUsers,
   getUser,
@@ -7,7 +8,7 @@ import {
   removeUser,
 } from "./controller";
 
-export async function router(
+export async function requestsHandler(
   request: IncomingMessage,
   response: ServerResponse
 ): Promise<void> {
@@ -30,7 +31,7 @@ export async function router(
         case "POST":
           if (id) {
             response.writeHead(404, { "Content-Type": "application/json" });
-            response.end(JSON.stringify({ code: 404, message: "" }));
+            response.end(JSON.stringify({ code: 404, message: messages.unsupportPath }));
           } else {
             addUser(request, response);
           }
@@ -41,7 +42,7 @@ export async function router(
             updateUser(request, response, id);
           } else {
             response.writeHead(404, { "Content-Type": "application/json" });
-            response.end(JSON.stringify({ code: 404, message: "" }));
+            response.end(JSON.stringify({ code: 404, message: messages.unsupportPath }));
           }
           break;
 
@@ -50,20 +51,20 @@ export async function router(
             removeUser(response, id);
           } else {
             response.writeHead(404, { "Content-Type": "application/json" });
-            response.end(JSON.stringify({ code: 404, message: "" }));
+            response.end(JSON.stringify({ code: 404, message: messages.unsupportPath }));
           }
           break;
 
         default:
           response.writeHead(400, { "Content-Type": "application/json" });
-          response.end(JSON.stringify({ code: 400, message: "" }));
+          response.end(JSON.stringify({ code: 400, message: messages.unsupportRequest }));
       }
     } else {
       response.writeHead(404, { "Content-Type": "application/json" });
-      response.end(JSON.stringify({ code: 404, message: "" }));
+      response.end(JSON.stringify({ code: 404, message: messages.unsupportPath }));
     }
   } catch {
     response.writeHead(500, { "Content-Type": "application/json" });
-    response.end(JSON.stringify({ code: 500, message: "" }));
+    response.end(JSON.stringify({ code: 500, message: messages.serverError }));
   }
 }
