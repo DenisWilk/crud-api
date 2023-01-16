@@ -6,6 +6,7 @@
   "scripts": {
     "start:prod": "tsc && node ./dist/index.js",
     "start:dev": "nodemon",
+    "start:multi": "cross-env MODE=multi npm run start:dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.0",
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"
